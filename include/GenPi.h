@@ -83,6 +83,7 @@ namespace GenPi {
 
 			std::cout << "\n[0 - 2, q]: ";
 			int config = getchar();
+			printf("Captured %i\n", getchar());
 
 			switch(config) {
                 case '0': modifyParameter(); break;
