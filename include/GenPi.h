@@ -86,9 +86,9 @@ namespace GenPi {
 			printf("Captured %i\n", getchar());
 
 			switch(config) {
-                case '0': modifyParameter(); break;
-				case '1': configureAudioInput(); break;
-				case '2': configureAudioOutput(); break;
+                case '0': modifyParam1(); break;
+				//case '1': configureAudioInput(); break;
+				//case '2': configureAudioOutput(); break;
                 /*
 				case '3': configureMidiInput(); break;
 				case '4': configureMidiOutput(); break;
@@ -215,6 +215,45 @@ namespace GenPi {
 			return -1;
 		}
         */
+
+        void modifyParam1() {
+			std::vector<std::string> params = m_host.getParameters();
+			if (params.size()) {
+				while (1) {
+					std::cout << "\nSelect from the following:" << std::endl;
+					for (int i = 0; i < params.size(); i++) {
+						std::cout << "[" << i << "] " << params[i] << std::endl;
+					}
+					std::cout << "[b] Back to Main Menu" << std::endl;
+					std::cout << "\n[0 - " << params.size()-1 << ", b]: ";
+
+					int index = getchar();
+					if (index != 'b' && index == (91 || 93)) {
+						//index = 1;
+						//if (index < params.size()) {
+							t_param val = m_host.getParameterValue(0);
+							std::cout << "\nCurrent value: " << val << ". New value?: ";
+							std::string newvalstr;
+							std::getline(std::cin, newvalstr);
+							if (!newvalstr.empty()) {
+								try {
+									double newval = std::stod(newvalstr);
+									t_param min, max;
+									m_host.getParameterMinMax(index, &min, &max);
+									newval = (newval < min) ? min : (newval > max) ? max : newval;
+									m_host.setParameterValue(index, t_param(newval));
+								}
+								catch(std::exception &e) {
+									std::cout << "\nI take exception!" << std::endl;
+								}
+							}
+						//}
+					} else break;
+				}
+			} else {
+				std::cout << "\nNo parameters." << std::endl;
+			}
+		}
 
         void modifyParameter() {
 			std::vector<std::string> params = m_host.getParameters();
