@@ -31,6 +31,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "Globals.h"
 #include "HardwareEncoder.h"
 #include <algorithm>
+#include <conio.h>
+#include <iostream>
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 
 namespace GenPi {
 
@@ -83,19 +90,30 @@ namespace GenPi {
 
 			std::cout << "\n[0 - 2, q]: ";
 			int config = getchar();
+			int c = 0;
 			printf("Captured %i\n", getchar());
 
-			switch(config) {
-                case '0': modifyParam1(); break;
-				//case '1': configureAudioInput(); break;
-				//case '2': configureAudioOutput(); break;
+			switch((c=getch())) {
+                case '0': modifyParameter(); break;
+				case '1': configureAudioInput(); break;
+				case '2': configureAudioOutput(); break;
                 /*
 				case '3': configureMidiInput(); break;
 				case '4': configureMidiOutput(); break;
                 */
 				case 'q': shutdown(); rv = 1; break;
+				case KEY_UP: cout << endl << "Up" << endl;//key up
+            		break;
+        		case KEY_DOWN: cout << endl << "Down" << endl;   // key down
+            		break;
+        		case KEY_LEFT: cout << endl << "Left" << endl;  // key left
+            		break;
+        		case KEY_RIGHT: cout << endl << "Right" << endl;  // key right
+            		break;
 				case -1: rv = -1; break;
-				default: break;
+				default: 
+					cout << endl << "null" << endl;  // not arrow
+					break;
 			}
 			std::cout << std::endl;
 			return rv;
